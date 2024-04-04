@@ -19,3 +19,7 @@
 
 # Go workspace file
 go.work
+
+# Work files
+output.txt
+url_list.txt
