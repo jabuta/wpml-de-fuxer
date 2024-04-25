@@ -39,6 +39,11 @@ func getCommands() map[string]cliCommand {
 			description: "exit the defuxer",
 			callback:    exitDefuxer,
 		},
+		"getTranslations": {
+			name:        "getTranslations",
+			description: "gets all the post translations from the slug list provided",
+			callback:    getTranslations,
+		},
 	}
 }
 
