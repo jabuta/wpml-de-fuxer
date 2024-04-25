@@ -1,16 +1,24 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"net/http"
+	"log"
 	"os"
 	"strings"
+	"time"
+
+	"github.com/jabuta/wpml-de-fuxer/internal/wpAPI"
 )
 
 func main() {
+	siteURL := flag.String("url", "noURL", "write out the full wordpress url")
+	flag.Parse()
+	if *siteURL == "noURL" {
+		log.Panic("input a url")
+	}
 	cfg := &config{
-		baseURL:  "https://www.bizlatinhub.com",
-		client:   &http.Client{},
+		client:   wpAPI.NewClient(5*time.Second, *siteURL),
 		postList: setPostList(),
 	}
 
@@ -25,7 +33,7 @@ func main() {
 	for _, postSlug := range cfg.postList {
 		postSlugProc := strings.Split(postSlug, "/")
 		//fmt.Println(postSlugProc[1], postSlugProc[2])
-		post, err := cfg.getPostBySlug(postSlugProc[1], postSlugProc[2])
+		post, err := cfg.client.GetPostBySlug(postSlugProc[1], postSlugProc[2])
 		if err != nil {
 			fmt.Fprintf(file, "%s	%s\n", postSlug, err)
 			continue

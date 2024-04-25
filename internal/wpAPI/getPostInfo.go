@@ -1,4 +1,4 @@
-package main
+package wpAPI
 
 import (
 	"encoding/json"
@@ -7,8 +7,8 @@ import (
 	"net/http"
 )
 
-func (cfg *config) getPostByID(id int) (SinglePost, error) {
-	endpoint := fmt.Sprintf("%s/wp-json/wp/v2/posts/%v", cfg.baseURL, id)
+func (client Client) getPostByID(id int) (SinglePost, error) {
+	endpoint := fmt.Sprintf("%s/wp-json/wp/v2/posts/%v", client.baseURL, id)
 
 	req, err := http.NewRequest(http.MethodGet, endpoint, nil)
 	if err != nil {
@@ -16,7 +16,7 @@ func (cfg *config) getPostByID(id int) (SinglePost, error) {
 	}
 	setNoChacheHeaders(req)
 
-	res, err := cfg.client.Do(req)
+	res, err := client.httpClient.Do(req)
 	if err != nil {
 		return SinglePost{}, err
 	}
@@ -27,15 +27,15 @@ func (cfg *config) getPostByID(id int) (SinglePost, error) {
 	return posts[0], nil
 }
 
-func (cfg *config) getPostBySlug(lang, slug string) (SinglePost, error) {
-	endpoint := fmt.Sprintf("%s/%s/wp-json/wp/v2/posts?slug=%s", cfg.baseURL, lang, slug)
+func (client Client) GetPostBySlug(lang, slug string) (SinglePost, error) {
+	endpoint := fmt.Sprintf("%s/%s/wp-json/wp/v2/posts?slug=%s", client.baseURL, lang, slug)
 	req, err := http.NewRequest(http.MethodGet, endpoint, nil)
 	if err != nil {
 		return SinglePost{}, err
 	}
 	setNoChacheHeaders(req)
 
-	res, err := cfg.client.Do(req)
+	res, err := client.httpClient.Do(req)
 	if err != nil {
 		return SinglePost{}, err
 	}

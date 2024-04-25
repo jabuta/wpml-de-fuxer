@@ -3,9 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"net/http"
 	"os"
 	"strings"
+
+	"github.com/jabuta/wpml-de-fuxer/internal/wpAPI"
 )
 
 func startREPL(conf *config) {
@@ -54,8 +55,7 @@ func cleanInput(text string) []string {
 }
 
 type config struct {
-	baseURL  string
-	client   *http.Client
+	client   wpAPI.Client
 	postList []string
 	//apiKEY  string
 }
