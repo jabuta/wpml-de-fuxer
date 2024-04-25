@@ -7,19 +7,14 @@ import (
 	"strings"
 )
 
-type config struct {
-	baseURL  string
-	client   *http.Client
-	postList []string
-	//apiKEY  string
-}
-
 func main() {
 	cfg := &config{
 		baseURL:  "https://www.bizlatinhub.com",
 		client:   &http.Client{},
 		postList: setPostList(),
 	}
+
+	startREPL(cfg)
 
 	file, err := os.Create("output.txt")
 	if err != nil {
